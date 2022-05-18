@@ -131,8 +131,8 @@ VALUES(1,'Villa'),(2,'House'),(3,'Room');
 insert into khach_hang(ma_khach_hang,ho_ten,ngay_sinh,gioi_tinh,so_cmnd,so_dien_thoai,email,dia_chi,ma_loai_khach)
 values
 (1,"Nguyễn Thị Hào","1970-11-07",0,"643431213","0945423362","thihao07@gmail.com","23 Nguyễn Hoàng, Đà Nẵng",5),
-(2,"Hồ Quỳnh Hương","1992-08-08",1,"016561645","016589161516","abc@gmail.com","Đà Nẵng",3),
-(3,"Phạm Xuân Diệu","1990-02-27",1,"016561645","016589161516","abcd@gmail.com","Đà Nẵng",1),
+(2,"Hồ Quỳnh Hương","1992-08-08",1,"016561645","016589161516","abc@gmail.com","K77/22 Thái Phiên, Quảng Trị",3),
+(3,"Phạm Xuân Diệu","1990-02-27",1,"016561645","016589161516","abcd@gmail.com","K323/12 Ông Ích Khiêm, Vinh",1),
 (4,"Dương Văn Quan","1981-07-08",1,"543432111","0490039241","duongquan@gmail.com","K453/12 Lê Lợi, Đà Nẵng",1),
 (5,"Hoàng Trần Nhi Nhi","1995-12-09",0,"795453345","0312345678","nhinhi123@gmail.com","224 Lý Thái Tổ, Gia Lai",4),
 (6,"Tôn Nữ Mộc Châu","2005-12-06",0,"732434215","0988888844","tonnuchau@gmail.com","37 Yên Thế, Đà Nẵng",4),
@@ -216,7 +216,6 @@ group by ma_khach_hang
 order by so_lan_dat_phong;
 
 -- ///// TASK 5 ///// cau nay lam lai
--- hàm coalesce nếu null thì set giá trị về 0 (tự cho)
 
 select kh.ma_khach_hang,kh.ho_ten,lk.ten_loai_khach,hd.ma_hop_dong,dv.ten_dich_vu,hd.ngay_lam_hop_dong,hd.ngay_ket_thuc,
 (dv.chi_phi_thue +( hdct.so_luong * dvdk.gia) ) as tong_tien
@@ -229,8 +228,8 @@ group by hd.ma_hop_dong order by kh.ma_khach_hang;
 
 -- ///// TASK 6 /////
 
-select distinct dv.ma_dich_vu,dv.ten_dich_vu,dv.dien_tich,dv.chi_phi_thue,ldv.ten_loai_dich_vu
-from dich_vu dv join loai_dich_vu ldv on dv.ma_loai_dich_vu = ldv.ma_loai_dich_vu
+select distinct dv.ma_dich_vu,dv.ten_dich_vu,dv.dien_tich,dv.chi_phi_thue,ldv.ten_loai_dich_vu from dich_vu dv 
+join loai_dich_vu ldv on dv.ma_loai_dich_vu = ldv.ma_loai_dich_vu
 join hop_dong hd on hd.ma_dich_vu = dv.ma_dich_vu
 where hd.ma_dich_vu not in(select ma_dich_vu from hop_dong hd where year(hd.ngay_lam_hop_dong) = "2021" and quarter(hd.ngay_lam_hop_dong)=1 );
 
@@ -265,4 +264,45 @@ group by hd.ma_hop_dong
 order by hd.ma_hop_dong;
 
 -- ///// TASK 11 /////
+
+select dvdk.ma_dich_vu_di_kem, dvdk.ten_dich_vu_di_kem from dich_vu_di_kem dvdk
+join hop_dong_chi_tiet hdct on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem 
+join hop_dong hd on hdct.ma_hop_dong = hd.ma_hop_dong
+join khach_hang kh on hd.ma_khach_hang = kh.ma_khach_hang 
+join loai_khach lk on (lk.ma_loai_khach=1) = kh.ma_loai_khach 
+where kh.dia_chi like '%Vinh%' or '%Quảng Ngãi%'
+group by dvdk.ma_dich_vu_di_kem order by dvdk.ma_dich_vu_di_kem;
+
+-- ///// TASK 12 /////
+
+select hd.ma_hop_dong, nv.ho_ten, kh.ho_ten, kh.so_dien_thoai,dv.ten_dich_vu, sum(hdct.so_luong) as so_luong_dich_vu_di_kem, hd.tien_dat_coc from hop_dong hd
+join khach_hang kh on hd.ma_khach_hang = kh.ma_khach_hang
+join nhan_vien nv on hd.ma_nhan_vien = nv.ma_nhan_vien
+left join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
+join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
+where hd.ma_dich_vu not in (select hd.ma_dich_vu from hop_dong hd where  quarter(hd.ngay_lam_hop_dong) in (1,2) and year(hd.ngay_lam_hop_dong)=2021) 
+and hd.ma_dich_vu in (select hd.ma_dich_vu from hop_dong hd where  quarter(hd.ngay_lam_hop_dong)=4 and year(hd.ngay_lam_hop_dong)=2020)
+group by hd.ma_hop_dong order by hd.ma_hop_dong;
+
+-- ///// TASK 13 /////
+
+select dvdk.ma_dich_vu_di_kem, dvdk.ten_dich_vu_di_kem, sum(hdct.so_luong) as so_luong_dich_vu_di_kem from dich_vu_di_kem dvdk
+join hop_dong_chi_tiet hdct on dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+join hop_dong hd on hdct.ma_hop_dong = hd.ma_hop_dong
+group by dvdk.ma_dich_vu_di_kem 
+having sum(hdct.so_luong) = (select sum(hdct.so_luong) from hop_dong_chi_tiet hdct
+group by hdct.ma_dich_vu_di_kem order by sum(hdct.so_luong) desc limit 1);
+
+-- ///// TASK 14 /////
+
+select hd.ma_hop_dong, ldv.ten_loai_dich_vu, dvdk.ten_dich_vu_di_kem, count(dvdk.ma_dich_vu_di_kem) as so_lan_su_dung from hop_dong hd 
+join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
+join loai_dich_vu ldv on dv.ma_loai_dich_vu = ldv.ma_loai_dich_vu
+join hop_dong_chi_tiet hdct on hd.ma_hop_dong= hdct.ma_hop_dong
+join dich_vu_di_kem dvdk on hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem
+group by dvdk.ma_dich_vu_di_kem 
+having count(dvdk.ma_dich_vu_di_kem) =1 
+order by hd.ma_hop_dong;
+
+-- ///// TASK 15 /////
 
