@@ -87,7 +87,7 @@ create table hop_dong (
     ma_khach_hang int,
     ma_dich_vu int,
     foreign key (ma_nhan_vien) references nhan_vien(ma_nhan_vien),
-    foreign key (ma_khach_hang) references khach_hang(ma_khach_hang),
+    foreign key (ma_khach_hang) references khach_hang(ma_khach_hang) on delete set null,
     foreign key (ma_dich_vu) references dich_vu(ma_dich_vu)
 );
 
@@ -337,7 +337,8 @@ select * from khach_hang ;
 
 -- ///// TASK 18 /////
 
-
+delete ma_khach_hang from khach_hang 
+where ma_khach_hang in (select ma_khach_hang from hop_dong where year(ngay_lam_hop_dong) <2021);  
 
 -- ///// TASK 19 /////
 
@@ -355,4 +356,33 @@ select * from dich_vu_di_kem;
 
 select ma_nhan_vien, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi from nhan_vien
 union
-select ma_khach_hang, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi from khach_hang
+select ma_khach_hang, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi from khach_hang;
+
+   -- ///// TASK 21 /////
+
+create view v_nhan_vien as 
+select * from nhan_vien nv
+join hop_dong hd on nv.ma_nhan_vien = hd.ma_nhan_vien
+where hd.ngay_lam_hop_dong = '12/12/2019' and nv.dia_chi = 'Hải Châu';
+SELECT * FROM casestudy1.v_nhan_vien;
+
+   -- ///// TASK 22 /////
+   
+SELECT * FROM casestudy1.v_nhan_vien;
+update v_nhan_vien set v_nhan_vien.dia_chi = 'Liên Chiểu';
+
+   -- ///// TASK 23 /////
+
+select * from khach_hang;
+delimiter $$
+create procedure sp_xoa_khach_hang (in id_delete int)
+begin
+delete from khach_hang where ma_khach_hang = id_delete;
+end $$
+delimiter ;
+
+call sp_xoa_khach_hang(2);
+select * from khach_hang;
+
+   -- ///// TASK 24 /////
+   

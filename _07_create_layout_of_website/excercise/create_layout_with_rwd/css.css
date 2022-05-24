@@ -1,0 +1,61 @@
+body {
+    font-family: Verdana,sans-serif;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+header, footer {
+    padding: 10px;
+    color: white;
+    background-color: black;
+}
+
+.menu {
+    opacity: 80%;
+    background-color: #2d2828;
+}
+
+.menu:hover{
+    opacity: 100%;
+    background-color: crimson;
+}
+
+.body {
+    height: 400px;
+    width: 100%;
+    margin: 0;
+    background-color: #1f2f98;
+}
+
+.body_left{
+    height: 600px;
+    float: left;
+    background-color: gray;
+    width: 25%;
+    color: white;
+}
+
+.body_center {
+    height: 600px;
+    float: left;
+    background-color: white;
+    width: 50%;
+    color: black;
+
+}
+
+.body_right {
+    height: 600px;
+    float: right;
+    background-color: gray;
+    width: 25%;
+}
+
+nav ul {
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 5px;
+}
