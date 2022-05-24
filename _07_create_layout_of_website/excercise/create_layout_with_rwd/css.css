@@ -59,3 +59,18 @@ nav ul li {
     display: inline;
     margin: 5px;
 }
+
+ul{
+list-style: none;
+}
+
+.ad {
+    position: center;
+    width: 50%;
+    height: 50px;
+    border: #2d2828 solid 2px;
+    margin-top: 20px;
+
+    padding: 20px;
+    text-align: center;
+}

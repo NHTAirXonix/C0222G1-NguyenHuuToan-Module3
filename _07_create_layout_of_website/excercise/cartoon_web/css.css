@@ -1,0 +1,31 @@
+body{
+    margin: 0;
+}
+
+.top{
+    background-color: gray;
+    height: 80px;
+    width: 100%;
+    padding: 10px;
+}
+
+.bottom{
+    background-color: gray;
+    height: 100px;
+    width: 100%;
+
+}
+
+.body{
+    width: 100%;
+    background-color: white;
+    height: 1000px;
+}
+
+.menu{
+    background-color: lightskyblue;
+    height: 80px;
+    width: 100%;
+    padding: 10px;
+}
+
