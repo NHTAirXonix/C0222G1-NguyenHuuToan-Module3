@@ -5,7 +5,7 @@
   Time: 3:53 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <html>
 <head>
   <title>$Title$</title>
@@ -15,10 +15,12 @@
       height: 250px;
       margin: auto;
       padding: 20px;
-      background-color: white;
-      border: solid navy 2px;
+      margin-top: 100px;
+      background-image: linear-gradient(to right bottom, #000000, #d9b443);
+      border: solid #ffa900 2px;
       border-radius: 10px;
       display: inline-block;
+      color: white;
     }
 
     label {
